@@ -1,3 +1,5 @@
+
+
 gcloud compute networks create vpc-demo --subnet-mode custom
 
 gcloud compute networks subnets create vpc-demo-subnet1 \
@@ -146,3 +148,31 @@ ping -c 4 10.1.1.2
 gcloud compute networks update vpc-demo --bgp-routing-mode GLOBAL
 gcloud compute networks describe vpc-demo
 ping -c 2 10.2.1.2
+gcloud compute vpn-tunnels delete vpc-demo-tunnel0  --region "REGION"
+gcloud compute vpn-tunnels describe on-prem-tunnel0  --region "REGION"
+ping -c 3 10.1.1.2
+gcloud compute vpn-tunnels delete on-prem-tunnel0  --region "REGION"
+gcloud compute vpn-tunnels delete vpc-demo-tunnel1  --region "REGION"
+gcloud compute vpn-tunnels delete on-prem-tunnel1  --region "REGION"
+gcloud compute routers remove-bgp-peer vpc-demo-router1 --peer-name bgp-on-prem-tunnel0 --region "REGION"
+gcloud compute routers remove-bgp-peer vpc-demo-router1 --peer-name bgp-on-prem-tunnel1 --region "REGION"
+gcloud compute routers remove-bgp-peer on-prem-router1 --peer-name bgp-vpc-demo-tunnel0 --region "REGION"
+gcloud compute routers remove-bgp-peer on-prem-router1 --peer-name bgp-vpc-demo-tunnel1 --region "REGION"
+gcloud compute  routers delete on-prem-router1 --region "REGION"
+gcloud compute  routers delete vpc-demo-router1 --region "REGION"
+gcloud compute vpn-gateways delete vpc-demo-vpn-gw1 --region "REGION"
+gcloud compute vpn-gateways delete on-prem-vpn-gw1 --region "REGION"
+gcloud compute instances delete vpc-demo-instance1 --zone "ZONE"
+gcloud compute instances delete vpc-demo-instance2 --zone "ZONE"
+gcloud compute instances delete on-prem-instance1 --zone zone_name
+gcloud compute firewall-rules delete vpc-demo-allow-custom
+gcloud compute firewall-rules delete on-prem-allow-subnets-from-vpc-demo
+gcloud compute firewall-rules delete on-prem-allow-ssh-icmp
+gcloud compute firewall-rules delete on-prem-allow-custom
+gcloud compute firewall-rules delete vpc-demo-allow-subnets-from-on-prem
+gcloud compute firewall-rules delete vpc-demo-allow-ssh-icmp
+gcloud compute networks subnets delete vpc-demo-subnet1 --region "REGION"
+gcloud compute networks subnets delete vpc-demo-subnet2 --region REGION 2
+gcloud compute networks subnets delete on-prem-subnet1 --region "REGION"
+gcloud compute networks delete vpc-demo
+gcloud compute networks delete on-prem
